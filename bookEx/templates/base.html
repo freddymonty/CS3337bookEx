@@ -1,0 +1,62 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Simple Layout Page</title>
+    <link href="{% static 'main.css' %}" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+        <span style="float: right;">
+            {% if user.is_authenticated %}
+               {{ user.username}}
+               <form action="{% url 'logout' %}?next=/" method="post">
+                   <button type="submit">logout</button>
+                   {% csrf_token %}
+               </form>
+            {% else %}
+               Not Logged in
+               <a href="{% url 'login' %}?next=/">login</a>
+            {% endif %}
+        </span>
+
+    <!-- Top Banner -->
+    <header class="banner">
+        <h1>My Website Banner</h1>
+    </header>
+
+    <!-- Main Layout Container -->
+    <div class="container">
+
+        <!-- Left Menu -->
+        <nav class="sidebar">
+            <ul>
+                {% block sidenav %}
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                {% endblock sidenav %}
+            </ul>
+        </nav>
+
+        <!-- Main Content (Right Side) -->
+            <main class="content">
+            {% block content %}
+               <h1>Main Content</h1>
+            {% endblock content %}
+        </main>
+
+
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2026 CS3337 CSULA. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
