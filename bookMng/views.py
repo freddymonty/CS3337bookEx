@@ -1,7 +1,11 @@
+from django.contrib.auth.decorators import login_required
+from django.db.models import Avg
 from django.http import HttpResponse
-from django.shortcuts import render
-from .models import MainMenu
-from .forms import BookForm
+from django.shortcuts import render, redirect, get_object_or_404
+from nltk.corpus.reader import Review
+
+from .models import MainMenu, Rating
+from .forms import BookForm, RatingForm
 from django.http import HttpResponseRedirect
 from .models import Book
 from django.views.generic.edit import CreateView
@@ -9,12 +13,6 @@ from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 
 # Create your views here.
-
-# def index(request):
-#     return render(request, 'base.html')
-
-# def index(request):
-#     return render(request, 'bookMng/displaybooks.html')
 
 def index(request):
     return render(request,
@@ -106,3 +104,40 @@ def book_delete(request, book_id):
                   {
                       'item_list': MainMenu.objects.all(),
                   })
+
+@login_required
+def rate_book(request, book_id):
+    book = get_object_or_404(Book, id=book_id)
+
+    if book.username == request.user:
+        return redirect('displaybooks')
+
+    existing_rating = Rating.objects.filter(book=book, user=request.user).first()
+
+    if request.method == 'POST':
+        if existing_rating:
+            form = RatingForm(request.POST, instance=existing_rating)
+        else:
+            form = RatingForm(request.POST)
+
+        if form.is_valid():
+            rating = form.save(commit=False)
+            rating.book = book
+            rating.user = request.user
+            rating.save()
+            return redirect('displaybooks')
+    else:
+        if existing_rating:
+            form = RatingForm(instance=existing_rating)
+        else:
+            form = RatingForm()
+
+    return render(
+        request,
+        'bookMng/rate_book.html',
+        {
+            'item_list': MainMenu.objects.all(),
+            'book': book,
+            'form': form,
+        }
+    )

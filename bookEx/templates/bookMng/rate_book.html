@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block sidenav %}
+   {% for item in item_list %}
+      <li>
+        <a href="{{ item.link }}"> {{ item.item }} </a>
+      </li>
+   {% endfor %}
+{% endblock sidenav %}
+
+{% block content %}
+<div class="form-container">
+    <h2>Rate Book</h2>
+
+    <p><strong>Book:</strong> {{ book.name }}</p>
+    <p><strong>Current Average Rating:</strong> {{ book.average_rating }} / 5</p>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="rate-btn">Submit Rating</button>
+        <a href="{% url 'displaybooks' %}" class="cancel-btn">Cancel</a>
+    </form>
+</div>
+{% endblock content %}
