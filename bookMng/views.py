@@ -107,7 +107,7 @@ def book_delete(request, book_id):
 
 def aboutus(request):
     return render(request,
-                  'bookMng/about.html',
+                  'bookMng/aboutus.html',
                   {
                       'item_list': MainMenu.objects.all()
                   })
