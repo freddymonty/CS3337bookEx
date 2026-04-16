@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{% static 'table_format.css' %}" type="text/css" />
     <link rel="stylesheet" href="{% static 'base.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'displaybook.css' %}" type="text/css" />
+    <link rel="stylesheet" href="{% static 'about.css' %}" type="text/css" />
 </head>
 <body>
 
@@ -38,7 +39,7 @@
             <ul>
                 {% block sidenav %}
                     <li><a href="#home">Home</a></li>
-                    <li><a href="#about">About</a></li>
+                    <li><a href="{% url 'about' %}">About</a></li>
                     <li><a href="#services">Services</a></li>
                     <li><a href="#contact">Contact</a></li>
                 {% endblock sidenav %}

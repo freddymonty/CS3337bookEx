@@ -105,6 +105,13 @@ def book_delete(request, book_id):
                       'item_list': MainMenu.objects.all(),
                   })
 
+def about(request):
+    return render(request,
+                  'bookMng/about.html',
+                  {
+                      'item_list': MainMenu.objects.all()
+                  })
+
 @login_required
 def rate_book(request, book_id):
     book = get_object_or_404(Book, id=book_id)
