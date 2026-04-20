@@ -3,8 +3,13 @@ from django.db.models import Avg
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
+<<<<<<< HEAD
 from .models import MainMenu, Rating, Comment
 from .forms import BookForm, RatingForm, CommentForm
+=======
+from .models import MainMenu, Rating, Favorite
+from .forms import BookForm, RatingForm
+>>>>>>> parent of be6b1dd (Revert "Added 'Search a Book' and 'Favorites' features.")
 from django.http import HttpResponseRedirect
 from .models import Book
 from django.views.generic.edit import CreateView
@@ -48,14 +53,21 @@ def postbook(request):
 
 
 def displaybooks(request):
+    fav_book_ids = set()
+    if request.user.is_authenticated:
+        fav_book_ids = set(Favorite.objects.filter(user=request.user).values_list('book_id', flat=True))
+    search = request.GET.get('q', '')
     books = Book.objects.all()
+    if search:
+        books = books.filter(name__icontains=search)
     for b in books:
         b.pic_path = b.picture.url[14:]
     return render(request,
                   'bookMng/displaybooks.html',
                   {
                       'item_list': MainMenu.objects.all(),
-                      'books': books
+                      'books': books,
+                      'search': search,
                   })
 
 
@@ -165,3 +177,23 @@ def rate_book(request, book_id):
             'form': form,
         }
     )
+
+@login_required
+def toggle_favorite(request, book_id):
+    book = get_object_or_404(Book, id=book_id)
+    fav, created = Favorite.objects.get_or_create(user=request.user, book=book)
+    if not created:
+        fav.delete()  # already favorited → unfavorite it
+    return redirect(request.META.get('HTTP_REFERER', 'displaybooks'))
+
+@login_required
+def my_favorites(request):
+    favorites = Favorite.objects.filter(user=request.user).select_related('book')
+    books = []
+    for fav in favorites:
+        fav.book.pic_path = fav.book.picture.url[14:]
+        books.append(fav.book)
+    return render(request, 'bookMng/my_favorites.html', {
+        'item_list': MainMenu.objects.all(),
+        'books': books,
+    })
