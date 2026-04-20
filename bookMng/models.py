@@ -56,7 +56,6 @@ class Rating(models.Model):
         super().delete(*args, **kwargs)
         book.update_average_rating()
 
-<<<<<<< HEAD
 
 class Comment(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='comments')
@@ -69,15 +68,3 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"{self.user.username} on {self.book.name} at {self.created_at:%Y-%m-%d %H:%M}"
-=======
-class Favorite(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    added_at = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        unique_together = ('user', 'book')  # prevents duplicate favorites
-
-    def __str__(self):
-        return f"{self.user.username} ♥ {self.book.name}"
->>>>>>> parent of be6b1dd (Revert "Added 'Search a Book' and 'Favorites' features.")
