@@ -3,8 +3,6 @@ from django.db.models import Avg
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
-from .models import MainMenu, Rating, Comment
-from .forms import BookForm, RatingForm, CommentForm
 from .models import MainMenu, Rating, Favorite
 from .forms import BookForm, RatingForm
 from django.http import HttpResponseRedirect
@@ -66,6 +64,8 @@ def displaybooks(request):
                       'books': books,
                       'search': search,
                   })
+
+
 
 
 class Register(CreateView):

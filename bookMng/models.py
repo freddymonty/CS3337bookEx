@@ -57,6 +57,7 @@ class Rating(models.Model):
         book.update_average_rating()
 
 
+
 class Comment(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='comments')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
