@@ -3,13 +3,10 @@ from django.db.models import Avg
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
-<<<<<<< HEAD
 from .models import MainMenu, Rating, Comment
 from .forms import BookForm, RatingForm, CommentForm
-=======
 from .models import MainMenu, Rating, Favorite
 from .forms import BookForm, RatingForm
->>>>>>> parent of be6b1dd (Revert "Added 'Search a Book' and 'Favorites' features.")
 from django.http import HttpResponseRedirect
 from .models import Book
 from django.views.generic.edit import CreateView
