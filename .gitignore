@@ -27,8 +27,7 @@ __pycache__/
 # runs `git rm --cached db.sqlite3` and commits that removal. README.md
 # walks through that one-time cleanup.
 # ============================================================================
-db.sqlite3
-db.sqlite3-journal
+
 
 # ============================================================================
 # PyCharm / IntelliJ per-user state.
