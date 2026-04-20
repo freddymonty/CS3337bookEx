@@ -2,10 +2,9 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Avg
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from nltk.corpus.reader import Review
 
-from .models import MainMenu, Rating
-from .forms import BookForm, RatingForm
+from .models import MainMenu, Rating, Comment
+from .forms import BookForm, RatingForm, CommentForm
 from django.http import HttpResponseRedirect
 from .models import Book
 from django.views.generic.edit import CreateView
@@ -71,15 +70,33 @@ class Register(CreateView):
 
 
 def book_detail(request, book_id):
-    book = Book.objects.get(id=book_id)
+    book = get_object_or_404(Book, id=book_id)
 
     book.pic_path = book.picture.url[14:]
+    comments = book.comments.all()  # ordered newest-first via Comment.Meta.ordering
+    form = CommentForm() if request.user.is_authenticated else None
+
     return render(request,
                   'bookMng/book_detail.html',
                   {
                       'item_list': MainMenu.objects.all(),
-                      'book': book
+                      'book': book,
+                      'comments': comments,
+                      'form': form,
                   })
+
+
+@login_required
+def add_comment(request, book_id):
+    book = get_object_or_404(Book, id=book_id)
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.book = book
+            comment.user = request.user
+            comment.save()
+    return redirect('book_detail', book_id=book.id)
 
 
 

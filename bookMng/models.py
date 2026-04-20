@@ -56,3 +56,15 @@ class Rating(models.Model):
         super().delete(*args, **kwargs)
         book.update_average_rating()
 
+
+class Comment(models.Model):
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='comments')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']  # newest first
+
+    def __str__(self):
+        return f"{self.user.username} on {self.book.name} at {self.created_at:%Y-%m-%d %H:%M}"
