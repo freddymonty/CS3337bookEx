@@ -11,5 +11,7 @@ urlpatterns = [
     path('book_delete/<int:book_id>', views.book_delete, name='book_delete'),
     path('book/<int:book_id>/rate/', views.rate_book, name='rate_book'),
     path('about', views.about, name='about'),
+path('favorites', views.my_favorites, name='my_favorites'),
+path('book/<int:book_id>/favorite/', views.toggle_favorite, name='toggle_favorite'),
 
 ]

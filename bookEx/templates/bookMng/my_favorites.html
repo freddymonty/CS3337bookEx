@@ -42,7 +42,7 @@
           <td>{{ book.price }}</td>
           <td>{{ book.username }}</td>
           <td>{{ book.publishdate }}</td>
-          <td>{{ book.average_rating }} / 5
+          <td>
           {% if user.is_authenticated %}
             <a href="{% url 'toggle_favorite' book.id %}">
               {% if book.id in fav_book_ids %}★ Unfavorite{% else %}☆ Favorite{% endif %}
