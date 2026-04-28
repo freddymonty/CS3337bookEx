@@ -20,7 +20,6 @@ class RatingForm(ModelForm):
 
         widgets = {
             'rating': forms.Select(choices=[(i, f'{i}/5') for i in range(1, 6)]),
-
         }
 
 

@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('bookMng', '0003_rating_and_average_rating'),
+        ('bookMng', '0003_book_average_rating_favorite_rating'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
