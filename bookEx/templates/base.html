@@ -78,8 +78,10 @@
             <div class="nav-section-label">Navigation</div>
             {% block sidenav %}
             <a href="/" class="nav-link"><i class="bi bi-house-fill"></i> Home</a>
-            <a href="{% url 'aboutus' %}" class="nav-link"><i class="bi bi-info-circle-fill"></i> About</a>
-            <a href="{% url 'displaybooks' %}" class="nav-link"><i class="bi bi-grid-fill"></i> Browse Books</a>
+            <a href="{% url 'displaybooks' %}" class="nav-link"><i class="bi bi-grid-fill"></i> Display Books</a>
+            <a href="{% url 'postbook' %}" class="nav-link"><i class="bi bi-plus-circle-fill"></i> Post Book</a>
+            <a href="{% url 'mybooks' %}" class="nav-link"><i class="bi bi-book-fill"></i> My Books</a>
+            <a href="{% url 'aboutus' %}" class="nav-link"><i class="bi bi-info-circle-fill"></i> About Us</a>
             {% endblock sidenav %}
             {% if user.is_authenticated %}
             <div class="divider"></div>
