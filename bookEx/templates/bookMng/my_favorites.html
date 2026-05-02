@@ -2,9 +2,7 @@
 {% load static %}
 
 {% block sidenav %}
-{% for item in item_list %}
-<a href="{{ item.link }}" class="nav-link"><i class="bi bi-chevron-right"></i> {{ item.item }}</a>
-{% endfor %}
+{{ block.super }}
 {% endblock sidenav %}
 
 {% block content %}

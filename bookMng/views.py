@@ -30,14 +30,12 @@ def index(request):
 def postbook(request):
     submitted = False
     if request.method == 'POST':
+        if not request.user.is_authenticated:
+            return redirect('login')
         form = BookForm(request.POST, request.FILES)
         if form.is_valid():
-            #form.save()
             book = form.save(commit=False)
-            try:
-                book.username = request.user
-            except Exception:
-                pass
+            book.username = request.user
             book.save()
             return HttpResponseRedirect('/postbook?submitted=True')
     else:
