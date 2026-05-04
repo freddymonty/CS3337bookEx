@@ -42,8 +42,27 @@
                 <td>${{ book.price }}</td>
                 <td>{{ book.username }}</td>
                 <td>{{ book.publishdate }}</td>
-                <td>
-                    <span class="badge" style="background:#c0000c;">{{ book.average_rating }}/5</span>
+               <td>
+                    {% if user.is_authenticated %}
+                        {% if book.username == user %}
+                            <!-- Owner, cannot rate -->
+                            <span class="badge" style="background:#212529;" title="You cannot rate your own book">
+                                {{ book.average_rating }}/5
+                            </span>
+                        {% else %}
+                            <!-- Logged-in,can rate -->
+                            <a href="{% url 'rate_book' book.id %}" class="text-decoration-none" title="Rate this book">
+                                <span class="badge" style="background:#c0000c;">
+                                    {{ book.average_rating }}/5
+                                </span>
+                            </a>
+                        {% endif %}
+                    {% else %}
+                        <!-- Not logged in, no link -->
+                        <span class="badge" style="background:#6c757d;" title="Login to rate">
+                            {{ book.average_rating }}/5
+                        </span>
+                    {% endif %}
                 </td>
                 <td>
                     {% if user.is_authenticated %}
