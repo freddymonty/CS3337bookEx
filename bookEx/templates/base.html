@@ -80,12 +80,12 @@
             <a href="/" class="nav-link"><i class="bi bi-house-fill"></i> Home</a>
             <a href="{% url 'displaybooks' %}" class="nav-link"><i class="bi bi-grid-fill"></i> Display Books</a>
             <a href="{% url 'postbook' %}" class="nav-link"><i class="bi bi-plus-circle-fill"></i> Post Book</a>
-            <a href="{% url 'mybooks' %}" class="nav-link"><i class="bi bi-book-fill"></i> My Books</a>
             <a href="{% url 'aboutus' %}" class="nav-link"><i class="bi bi-info-circle-fill"></i> About Us</a>
             {% endblock sidenav %}
             {% if user.is_authenticated %}
             <div class="divider"></div>
             <div class="nav-section-label">My Account</div>
+            <a href="{% url 'mybooks' %}" class="nav-link"><i class="bi bi-book-fill"></i> My Books</a>
             <a href="{% url 'my_favorites' %}" class="nav-link"><i class="bi bi-star-fill"></i> My Favorites</a>
             {% endif %}
         </nav>
