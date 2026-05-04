@@ -168,7 +168,7 @@ def rate_book(request, book_id):
             rating.book = book
             rating.user = request.user
             rating.save()
-            return redirect('book_detail', book_id=book.id)
+            return redirect('displaybooks')
     else:
         if existing_rating:
             form = RatingForm(instance=existing_rating)
