@@ -86,6 +86,14 @@ def book_detail(request, book_id):
     comments = book.comments.all()  # ordered newest-first via Comment.Meta.ordering
     form = CommentForm() if request.user.is_authenticated else None
 
+    user_rating = 0
+    can_rate = False
+    if request.user.is_authenticated and book.username != request.user:
+        can_rate = True
+        existing = Rating.objects.filter(book=book, user=request.user).first()
+        if existing:
+            user_rating = existing.rating
+
     return render(request,
                   'bookMng/book_detail.html',
                   {
@@ -93,6 +101,8 @@ def book_detail(request, book_id):
                       'book': book,
                       'comments': comments,
                       'form': form,
+                      'user_rating': user_rating,
+                      'can_rate': can_rate,
                   })
 
 @login_required
@@ -107,15 +117,18 @@ def add_comment(request, book_id):
             comment.save()
     return redirect('book_detail', book_id=book.id)
 
+@login_required
 def mybooks(request):
     books = Book.objects.filter(username=request.user)
     for b in books:
         b.pic_path = b.picture.url[14:]
+    fav_book_ids = set(Favorite.objects.filter(user=request.user).values_list('book_id', flat=True))
     return render(request,
                   'bookMng/mybooks.html',
                   {
                       'item_list': MainMenu.objects.all(),
-                      'books': books
+                      'books': books,
+                      'fav_book_ids': fav_book_ids,
                   })
 
 def book_delete(request, book_id):
@@ -155,7 +168,7 @@ def rate_book(request, book_id):
             rating.book = book
             rating.user = request.user
             rating.save()
-            return redirect('displaybooks')
+            return redirect('book_detail', book_id=book.id)
     else:
         if existing_rating:
             form = RatingForm(instance=existing_rating)
@@ -189,7 +202,9 @@ def my_favorites(request):
     for fav in favorites:
         fav.book.pic_path = fav.book.picture.url[14:]
         books.append(fav.book)
+    fav_book_ids = {b.id for b in books}
     return render(request, 'bookMng/my_favorites.html', {
         'item_list': MainMenu.objects.all(),
         'books': books,
+        'fav_book_ids': fav_book_ids,
     })

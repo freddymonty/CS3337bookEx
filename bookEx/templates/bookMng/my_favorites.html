@@ -15,9 +15,9 @@
                 <th><i class="bi bi-book"></i> Book Name</th>
                 <th><i class="bi bi-tag"></i> Price</th>
                 <th><i class="bi bi-person"></i> Posted By</th>
-                <th><i class="bi bi-calendar3"></i> Date</th>
-                <th><i class="bi bi-star"></i> Rating</th>
-                <th><i class="bi bi-gear"></i> Action</th>
+                <th><i class="bi bi-calendar3"></i> Date Added</th>
+                <th><i class="bi bi-star-half"></i> Rating</th>
+                <th><i class="bi bi-star"></i> Favorite</th>
             </tr>
         </thead>
         <tbody>
@@ -29,16 +29,17 @@
                 <td>{{ book.publishdate }}</td>
                 <td>
                     <span class="badge" style="background:#c0000c;">{{ book.average_rating }}/5</span>
-                    <a href="{% url 'toggle_favorite' book.id %}" class="ms-1 text-decoration-none" title="Unfavorite">
-                        <i class="bi bi-star-fill" style="color:#c0000c;"></i>
-                    </a>
                 </td>
                 <td>
-                    {% if book.username != user %}
-                    <a href="{% url 'rate_book' book.id %}" class="btn-bx-primary text-decoration-none" style="font-size:.8rem;padding:.25rem .6rem;">
-                        <i class="bi bi-star-half"></i> Rate
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'toggle_favorite' book.id %}" class="text-decoration-none" title="Toggle favorite">
+                        {% if book.id in fav_book_ids %}
+                        <i class="bi bi-star-fill" style="color:#c0000c;"></i>
+                        {% else %}
+                        <i class="bi bi-star" style="color:#c0000c;"></i>
+                        {% endif %}
                     </a>
-                    {% else %}&mdash;{% endif %}
+                    {% endif %}
                 </td>
             </tr>
             {% empty %}
